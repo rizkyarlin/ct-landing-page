@@ -1,0 +1,60 @@
+---
+import Container from "./Container.astro"
+import CTAButton from "./CTAButton.astro"
+---
+
+<div class="relative" id="home">
+    <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+        <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
+        <div class="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
+    </div>
+    <Container>
+        <div class="relative pt-36 ml-auto">
+            <div class="lg:w-2/3 text-center mx-auto">
+                <h1 class="text-gray-900 dark:text-white font-bold text-5xl md:text-6xl xl:text-6xl"><span class="text-primary">ChiefTech.id</span> - Empowering Startups with Expert Tech Leadership</h1>
+                <p class="mt-8 text-gray-700 dark:text-gray-300">Are you a startup <span class="font-bold text-red-600">struggling with the high costs</span> and long-term commitment of hiring a full-time CTO? Or perhaps you're feeling <span class="font-bold text-red-600">the pressure of operating without a tech leader</span>? We understand these challenges, and we're here to help!</p>
+                <div class="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
+    
+                  <CTAButton/>
+                </div>
+            
+
+                
+              <div class="hidden  py-8 mt-16 border-y border-gray-100 dark:border-gray-800 sm:flex justify-between transition-opacity ease-in duration-300 opacity-60 hover:opacity-100">
+                    <div class="text-center p-1">
+                        <h6 class="text-lg font-semibold text-gray-700 dark:text-white">Tell Us Your Needs</h6>
+                        <p class="mt-2 text-gray-500">Jump on a quick call with us to share your tech needs</p>
+                    </div>
+                    <div class="text-center p-1">
+                        <h6 class="text-lg font-semibold text-gray-700 dark:text-white">Match with a CTO</h6>
+                        <p class="mt-2 text-gray-500">We'll match you with a CTO whose skills and experience align with your startup's vision</p>
+                    </div>
+                    <div class="text-center p-1">
+                        <h6 class="text-lg font-semibold text-gray-700 dark:text-white">Begin Collaboration</h6>
+                        <p class="mt-2 text-gray-500">Start working with your CTO and driving your tech goals forward.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="mt-12 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6">
+                <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
+                    <img src="./images/clients/microsoft.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                  </div>
+                <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
+                  <img src="./images/clients/airbnb.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                </div>
+                <div class="p-4 flex grayscale transition duration-200 hover:grayscale-0">
+                  <img src="./images/clients/google.svg" class="h-9 w-auto m-auto" loading="lazy" alt="client logo" width="" height="" />
+                </div>
+                <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
+                    <img src="./images/clients/ge.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                  </div>
+                  <div class="p-4 flex grayscale transition duration-200 hover:grayscale-0">
+                    <img src="./images/clients/netflix.svg" class="h-8 w-auto m-auto" loading="lazy" alt="client logo" width="" height="" />
+                  </div>
+                <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
+                    <img src="./images/clients/google-cloud.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                </div>
+              </div> -->
+        </div>
+    </Container>
+</div>
