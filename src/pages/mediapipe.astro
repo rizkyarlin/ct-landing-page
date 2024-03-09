@@ -1,4 +1,9 @@
-<!-- Copyright 2023 The MediaPipe Authors.
+
+<video id='trailer' controls="controls" preload='none' width="600" poster="https://assets.codepen.io/32795/poster.png">
+  <source id='mp4' src="http://media.w3.org/2010/05/sintel/trailer.mp4" type='video/mp4' />
+  <source id='webm' src="http://media.w3.org/2010/05/sintel/trailer.webm" type='video/webm' />
+  <source id='ogv' src="http://media.w3.org/2010/05/sintel/trailer.ogv" type='video/ogg' />
+</video><!-- Copyright 2023 The MediaPipe Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -45,7 +50,7 @@ h2 {
   clear: both;
 }
 
-video {
+#webcam {
   clear: both;
   display: block;
   transform: rotateY(180deg);
@@ -131,18 +136,6 @@ section {
 <h1>Recognize hand gestures using the MediaPipe HandGestureRecognizer task</h1>
 
 <section id="demos" class="invisible">
-  <h2>Demo: Recognize gestures</h2>
-  <p><em>Click on an image below</em> to identify the gestures in the image.</p>
-
-  <div class="detectOnClick">
-    <img src="https://assets.codepen.io/9177687/idea-gcbe74dc69_1920.jpg" crossorigin="anonymous" title="Click to get recognize!" />
-    <p class="classification removed">
-  </div>
-  <div class="detectOnClick">
-    <img src="https://assets.codepen.io/9177687/thumbs-up-ga409ddbd6_1.png" crossorigin="anonymous" title="Click to get recognize!" />
-    <p class="classification removed">
-  </div>
-
   <h2><br>Demo: Webcam continuous hand gesture detection</h2>
   <p>Use your hand to make gestures in front of the camera to get gesture classification. </br>Click <b>enable webcam</b> below and grant access to the webcam if prompted.</p>
 
@@ -205,91 +198,6 @@ const createGestureRecognizer = async () => {
   demosSection.classList.remove("invisible");
 };
 createGestureRecognizer();
-
-/********************************************************************
-// Demo 1: Detect hand gestures in images
-********************************************************************/
-
-const imageContainers = document.getElementsByClassName("detectOnClick");
-
-for (let i = 0; i < imageContainers.length; i++) {
-  imageContainers[i].children[0].addEventListener("click", handleClick);
-}
-
-async function handleClick(event) {
-  if (!gestureRecognizer) {
-    alert("Please wait for gestureRecognizer to load");
-    return;
-  }
-
-  if (runningMode === "VIDEO") {
-    runningMode = "IMAGE";
-    await gestureRecognizer.setOptions({ runningMode: "IMAGE" });
-  }
-  // Remove all previous landmarks
-  const allCanvas = event.target.parentNode.getElementsByClassName("canvas");
-  for (var i = allCanvas.length - 1; i >= 0; i--) {
-    const n = allCanvas[i];
-    n.parentNode.removeChild(n);
-  }
-
-  const results = gestureRecognizer.recognize(event.target);
-
-  // View results in the console to see their format
-  console.log(results);
-  if (results.gestures.length > 0) {
-    const p = event.target.parentNode.childNodes[3];
-    p.setAttribute("class", "info");
-
-    const categoryName = results.gestures[0][0].categoryName;
-    const categoryScore = parseFloat(
-      results.gestures[0][0].score * 100
-    ).toFixed(2);
-    const handedness = results.handednesses[0][0].displayName;
-
-    p.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
-    p.style =
-      "left: 0px;" +
-      "top: " +
-      event.target.height +
-      "px; " +
-      "width: " +
-      (event.target.width - 10) +
-      "px;";
-
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("class", "canvas");
-    canvas.setAttribute("width", event.target.naturalWidth + "px");
-    canvas.setAttribute("height", event.target.naturalHeight + "px");
-    canvas.style =
-      "left: 0px;" +
-      "top: 0px;" +
-      "width: " +
-      event.target.width +
-      "px;" +
-      "height: " +
-      event.target.height +
-      "px;";
-
-    event.target.parentNode.appendChild(canvas);
-    const canvasCtx = canvas.getContext("2d");
-    const drawingUtils = new DrawingUtils(canvasCtx);
-    for (const landmarks of results.landmarks) {
-      drawingUtils.drawConnectors(
-        landmarks,
-        GestureRecognizer.HAND_CONNECTIONS,
-        {
-          color: "#00FF00",
-          lineWidth: 5
-        }
-      );
-      drawingUtils.drawLandmarks(landmarks, {
-        color: "#FF0000",
-        lineWidth: 1
-      });
-    }
-  }
-}
 
 /********************************************************************
 // Demo 2: Continuously grab image from webcam stream and detect it.
@@ -382,22 +290,52 @@ async function predictWebcam() {
     }
   }
   canvasCtx.restore();
+
+
+
+
+  function controlTrailerByGesture(gesture){
+    console.log(gesture);
+    const trailer = document.getElementById("trailer");
+    if (gesture === "Thumb_Up" && trailer.volume <= 0.9) {
+      trailer.volume += 0.1
+    } else if (gesture === "Thumb_Down" && trailer.volume >= 0.1) {
+      trailer.volume -= 0.1
+    } else if (gesture === "Open_Palm") {
+      trailer.play(); 
+    } else if (gesture === "Closed_Fist") {
+      trailer.pause(); 
+    } else if (gesture === "ILoveYou") {
+      document.exitFullscreen();
+    } else if (gesture === "Victory") {
+      trailer.requestFullscreen();
+    }
+
+  }
+
   if (results.gestures.length > 0) {
     gestureOutput.style.display = "block";
     gestureOutput.style.width = videoWidth;
     const categoryName = results.gestures[0][0].categoryName;
+
     const categoryScore = parseFloat(
       results.gestures[0][0].score * 100
     ).toFixed(2);
     const handedness = results.handednesses[0][0].displayName;
     gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
+    controlTrailerByGesture(categoryName);
+    
   } else {
     gestureOutput.style.display = "none";
   }
   // Call this function again to keep predicting when the browser is ready.
   if (webcamRunning === true) {
-    window.requestAnimationFrame(predictWebcam);
+    setTimeout(
+      () => window.requestAnimationFrame(predictWebcam)
+      , 200);
   }
+
 }
 
 </script>
+
